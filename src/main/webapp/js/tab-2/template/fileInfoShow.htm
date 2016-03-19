@@ -1,0 +1,20 @@
+
+	 <table>
+		<tr>
+		<th rowspan="2" >Id</th><th colspan="2">POI</th><th colspan="2">FilterPoi</th><th colspan="2">GEOM</th><th colspan="2">ConvertGeom</th>
+		</tr>
+		<tr>
+		<th>抓取日期</th><th>数量</th><th>抓取日期</th><th>数量</th><th>抓取日期</th><th>数量</th><th>抓取日期</th><th>数量</th>
+		</tr>
+	{{#each districtList}}
+		<tr>
+		<td>{{addOne @index}}</td>
+		<td>{{havaVal name}</td>
+		<td>{{havaVal center}}</td>
+		<td>{{havaVal level}}</td>
+		<td>{{havaVal boundaries}}</td>
+		</tr>
+ 	{{/each}}
+    </table> 
+<!-- 		<tr><td id="id"></td><td id="poiDate"></td><td id="poiNum"></td><td id="filterPoiDate"></td><td id="filterPoiNum"></td><td id="polygonDate"></td><td id="polygonNum"></td><td id="convertPolygonDate"></td><td id="convertPolygonNUM"></td></tr>
+ -->

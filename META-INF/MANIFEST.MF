@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Analysismap
+Bundle-SymbolicName: Analysismap
+Bundle-Version: 1.0.0.qualifier
+Export-Package: com.autonavi.analysismap,
+ com.autonavi.analysismap.entity,
+ com.autonavi.analysismap.excutefile,
+ com.autonavi.analysismap.mapper,
+ com.autonavi.analysismap.orm,
+ com.autonavi.analysismap.orm.impl,
+ com.autonavi.analysismap.service,
+ com.autonavi.analysismap.service.impl,
+ com.autonavi.analysismap.util,
+ mapper

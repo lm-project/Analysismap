@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>AdminPanel</title>
+	<#assign ctx=(rc.getContextPath())!''>
+	<script type="text/javascript">var path = '${ctx}';</script>
+	<link media="all" rel="stylesheet" type="text/css" href="css/all.css" />
+	<link media="all" rel="stylesheet" type="text/css" href="css/basic.css" />
+	<style type="text/css">
+		#checkResult table th ,td{
+			border: 1px solid blue;
+		}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?ak=A9AGCgtSHywDDpcy1qM4vhGC&v=2.0"></script> 
+	<script data-main="js/main" src="js/common/jquery-1.7.2.min.js"></script>
+	<script data-main="js/main" src="js/common/jquery.main.js"></script>
+	<script data-main="js/main" src="js/common/jquery.json/jquery.json-2.3.js"></script>
+	<script data-main="js/main" src="js/common/jquery.json/jquery.json-2.3.min.js"></script>
+	<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&key=N5GBZ-RBTRF-6OKJ3-JCGRQ-6NYKO-TLBE4"></script>
+	<script src="js/handlebars-v1.3.0.js"></script> 
+	<script data-main="js/main" src="js/common/require.js"></script>
+	<!--[if lt IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" /><![endif]-->
+</head>
+<body>
+	<div id="wrapper">
+		<div id="content">
+			<div class="c1">
+				<div class="controls">
+					<nav class="links">
+						<ul>
+							<li><a href="#" class="ico1">Messages <span class="num">26</span></a></li>
+							<li><a href="#" class="ico2">Alerts <span class="num">5</span></a></li>
+							<li><a href="#" class="ico3">Documents <span class="num">3</span></a></li>
+						</ul>
+					</nav>
+					<div class="profile-box">
+						<span class="profile">
+							<a href="#" class="section">
+								<img class="image" src="images/img1.png" alt="image description" width="26" height="26" />
+								<span class="text-box">
+									Welcome
+									<strong class="name">Asif Aleem</strong>
+								</span>
+							</a>
+							<a href="#" class="opener">opener</a>
+						</span>
+						<a href="#" class="btn-on">On</a>
+					</div>
+				</div>
+				<div class="tabs">
+					<div id="tab-1" class="tab">
+						<article>
+							<div class="text-section">
+								<h1>Dashboard</h1>
+								<p>This is a quick overview of some features</p>
+							</div>
+							<ul class="states">
+								<li class="error">Error : This is an error placed text message.</li>
+								<li class="warning">Warning: This is a warning placed text message.</li>
+								<li class="succes">Succes : This is a succes placed text message.</li>
+							</ul>
+						</article>
+					</div>
+					<div id="tab-2" class="tab">
+						<article>
+							<div class="text-section">
+								<h1>更新关键字</h1>
+								<p>选择抓取类型和目标</p>
+							</div>
+							<div class="text-select">
+								<div style="float:left">
+								<!-- <div>
+									类&nbsp;&nbsp;&nbsp;别:<input type='text' placeholder='选择输入查询关键字的类别' name='type-2' id='typeInput' list=""/>
+								</div> -->
+								<div>
+									关键字:<input type='text' name='key-2' id='keyInput' placeholder="请输入泛poi" title="如：小区，学校，景区..." value=""/>
+								</div>
+								<div>
+									城&nbsp;&nbsp;&nbsp;市:<input type='text' name='key-2' id='cityInput' placeholder="请输入城市" title="支持区（县）级以上行政区域，有的区（县）级别可能会查不到！" value=""/>
+									<div id = "cityAutoComplete"></div>
+								</div>
+								<div>
+									级&nbsp;&nbsp;&nbsp;别:<input type='text' id="levelInput" value="17"  name='key-2' readonly="readonly" />
+								</div>
+								<div id="mapRadio">
+								地图商:
+									<input name="mapRadio" type="radio" value="baidu"/>百度
+									<input name="mapRadio" type="radio" value="qq"/>腾讯
+									<input name="mapRadio" type="radio" value="autonavi"/>高德
+								</div>
+								</div>
+								<div id="info" style="float:left; width: 400px;height:100px;line-height: 100px;text-align: center;font-weight: bolder;"></div>
+								<div id="t2_grabBnts" style="clear: left;">
+									<!-- URL&nbsp;&nbsp;&nbsp;&nbsp;:<textarea rows="5" cols="70" name='url-2' id='url-2'></textarea> -->
+									<input type='button' value='抓取POI' />
+									<input type='button' value='过滤POI'/>
+									<input type='button' value='抓取Geom'/>
+									<input type='button' value='Geom坐标转换及入库'/>
+									<input type='button' value='综合执行'/>
+									<input type='button' value='查询文件'/>
+								</div>
+							</div>
+							<div id="checkResult"></div>
+							<ul class="states">
+								<li class="error">Error : This is an error placed text message.</li>
+								<li class="warning">Warning: This is a warning placed text message.</li>
+								<li class="succes">Succes : This is a succes placed text message.</li>
+							</ul>
+							<div id='result-2'>
+								
+							</div>
+						</article>
+					</div>
+					<div id="tab-3" class="tab">
+						<article>
+							<div class="text-section">
+								<h1><a title='点击查看API' href='http://developer.baidu.com/map/reference/index.php?title=Class:%E6%9C%8D%E5%8A%A1%E7%B1%BB/Boundary' target="_blank">搜索行政区域的边界</a></h1>
+								<p>name: 查询省、直辖市、地级市、或县的名称。<br>
+									callback:执行查询后，数据返回到客户端的回调函数，数据以回调函数的参数形式返回。返回结果是一个数组，数据格式如下：<br>
+									arr[0] = "x1, y1; x2, y2; x3, y3; ..."<br>
+									arr[1] = "x1, y1; x2, y2; x3, y3; ..."<br>
+									arr[2] = "x1, y1; x2, y2; ..."<br>
+									…<br>
+									否则回调函数的参数为null。(自1.3自增)</p>
+							</div>
+							<div style="padding-left:20px;width:100%;">
+								<div id="container" style="float:left;width:50%;height:400px;border:1px solid gray"></div> 
+								<div style="color:black">
+									关键字:<input type='text' placeholder='行政规划名称' name='key-3' id='key-3'/>
+									<input type='button' value='开始抓取' id='start-3' style="color:black"/>
+								</div>
+								<div id="result" style="float:left;width:45%;">
+									<textarea rows="17" cols="86" name='result-3' id='result-3'></textarea>
+								</div> 
+								<div style="float:left;width:45%;">
+									<ul class="states hidden" style="position:relative;right:-100%" >
+										<li id="message" class="error">Error : 查询失败!</li>
+									</ul>
+								</div>
+							</div>
+						</article>
+					</div>
+					<div id="tab-4" class="tab">
+						<article>
+							<div class="text-section">
+								<h1>Dashboard</h1>
+								<p>This is a quick overview of some features</p>
+							</div>
+							<ul class="states">
+								<li class="error">Error : This is an error placed text message.</li>
+								<li class="warning">Warning: This is a warning placed text message.</li>
+								<li class="succes">Succes : This is a succes placed text message.</li>
+							</ul>
+						</article>
+					</div>
+					<div id="tab-5" class="tab">
+						<article>
+							<div class="text-section">
+								<h1>Dashboard</h1>
+								<p>This is a quick overview of some features</p>
+							</div>
+							<ul class="states">
+								<li class="error">Error : This is an error placed text message.</li>
+								<li class="warning">Warning: This is a warning placed text message.</li>
+								<li class="succes">Succes : This is a succes placed text message.</li>
+							</ul>
+						</article>
+					</div>
+					<div id="tab-6" class="tab">
+						<article>
+							<div class="text-section">
+								<h1>Dashboard</h1>
+								<p>This is a quick overview of some features</p>
+							</div>
+							<ul class="states">
+								<li class="error">Error : This is an error placed text message.</li>
+								<li class="warning">Warning: This is a warning placed text message.</li>
+								<li class="succes">Succes : This is a succes placed text message.</li>
+							</ul>
+						</article>
+					</div>
+					<div id="tab-7" class="tab">
+						<article>
+							<div class="text-section">
+								<h1>Dashboard</h1>
+								<p>This is a quick overview of some features</p>
+							</div>
+							<ul class="states">
+								<li class="error">Error : This is an error placed text message.</li>
+								<li class="warning">Warning: This is a warning placed text message.</li>
+								<li class="succes">Succes : This is a succes placed text message.</li>
+							</ul>
+						</article>
+					</div>
+					<div id="tab-8" class="tab">
+						<article>
+							<div class="text-section">
+								<h1>Dashboard</h1>
+								<p>This is a quick overview of some features</p>
+							</div>
+							<ul class="states">
+								<li class="error">Error : This is an error placed text message.</li>
+								<li class="warning">Warning: This is a warning placed text message.</li>
+								<li class="succes">Succes : This is a succes placed text message.</li>
+							</ul>
+						</article>
+					</div>
+				</div>
+			</div>
+		</div>
+		<aside id="sidebar">
+			<strong class="logo"><a href="#">Map</a></strong>
+			<ul class="tabset buttons">
+				<li class="active">
+					<a href="#tab-1" class="ico1"><span>Dashboard</span><em></em></a>
+					<span class="tooltip"><span>Dashboard</span></span>
+				</li>
+				<li>
+					<a href="#tab-2" class="ico2"><span>Gallery</span><em></em></a>
+					<span class="tooltip"><span>Gallery</span></span>
+				</li>
+				<li>
+					<a href="#tab-3" class="ico3"><span>Pages</span><em></em></a>
+					<span class="tooltip"><span>Pages</span></span>
+				</li>
+				<li>
+					<a href="#tab-4" class="ico4"><span>Widgets</span><em></em></a>
+					<span class="tooltip"><span>Widgets</span></span>
+				</li>
+				<li>
+					<a href="#tab-5" class="ico5"><span>Archive</span><em></em></a>
+					<span class="tooltip"><span>Archive</span></span>
+				</li>
+				<li>
+					<a href="#tab-6" class="ico6">
+						<span>Comments</span><em></em>
+					</a>
+					<span class="num">11</span>
+					<span class="tooltip"><span>Comments</span></span>
+				</li>
+				<li>
+					<a href="#tab-7" class="ico7"><span>Plug-in</span><em></em></a>
+					<span class="tooltip"><span>Plug-in</span></span>
+				</li>
+				<li>
+					<a href="#tab-8" class="ico8"><span>Settings</span><em></em></a>
+					<span class="tooltip"><span>Settings</span></span>
+				</li>
+			</ul>
+			<span class="shadow"></span>
+		</aside>
+	</div>
+</body>
+</html>
